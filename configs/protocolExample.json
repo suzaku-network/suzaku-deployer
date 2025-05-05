@@ -1,0 +1,25 @@
+{
+    "generalConfig": {
+      "owner": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+      "initialVaultVersion": 1,
+      "defaultIncludeSlasher": false
+    },
+    "factoryConfig": {
+      "vaultFactory": "0x0000000000000000000000000000000000000001",
+      "delegatorFactory": "0x0000000000000000000000000000000000000002",
+      "slasherFactory": "0x0000000000000000000000000000000000000003",
+      "l1Registry": "0x0000000000000000000000000000000000000004",
+      "operatorRegistry": "0x0000000000000000000000000000000000000005"
+    },
+    "optinConfig": {
+      "operatorVaultOptInService": "0x0000000000000000000000000000000000000006",
+      "operatorL1OptInService": "0x0000000000000000000000000000000000000007"
+    },
+    "l1RegistryConfig": {
+      "feeCollector": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+      "initialRegisterFee": 1e16,
+      "maxRegisterFee": 1e18,
+      "owner": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+    }
+  }
+  

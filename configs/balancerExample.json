@@ -1,0 +1,11 @@
+{
+  "proxyAddress": "0x84F2B4D4cF8DA889701fBe83d127896880c04325",
+  "validatorManagerOwnerAddress": "0xC15adc0C87db428B9FC0Bb3246e7dEb2A991aa6E",
+  "initialSecurityModuleMaxWeight": 1000000,
+  "migratedValidations": [
+    "0x2818b9d2052366ce901e27e90edbeab6aa4a0a74b4db4825992cc56efd25eec6"
+  ],
+  "l1ID": "0x66226f76a8fb608290afeadc795bf8fe1e54779285228833d489ebf21ca06a07",
+  "churnPeriodSeconds": 3600,
+  "maximumChurnPercentage": 20
+}
