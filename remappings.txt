@@ -1,6 +1,5 @@
-@suzaku/collateral=lib/collateral/src
 @suzaku/core=lib/suzaku-core/
-@suzaku/contracts-lib=lib/suzaku-contracts-library
-@suzaku/contracts-library/=lib/suzaku-contracts-library/src
-@avalabs/teleporter/=lib/suzaku-contracts-library/lib/icm-contracts/contracts/
-@avalabs/icm-contracts/=lib/suzaku-contracts-library/lib/icm-contracts/contracts/
+@suzaku/contracts-lib=lib/suzaku-core/lib/suzaku-contracts-library/
+@avalabs/icm-contracts/=lib/suzaku-core/lib/suzaku-contracts-library/lib/icm-contracts/contracts/
+@utilities/=lib/suzaku-core/lib/suzaku-contracts-library/lib/icm-contracts/contracts/utilities/
+
