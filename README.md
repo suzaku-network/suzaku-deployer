@@ -43,8 +43,7 @@ The deployment process is divided into several steps that should be executed in 
 
 1. **Vault Deployment**: Deploy vaults using externally provided factories and registries
 2. **Middleware L1 Deployment**: Deploy the L1 middleware components
-3. **Middleware L2 Deployment**: Deploy the L2 middleware components
-4. **Validator Deployment**: Deploy validators connected to the middleware
+3. **Validator Deployment**: Deploy validators connected to the middleware
 
 Each step saves its deployment artifacts that are used by subsequent steps.
 
@@ -55,7 +54,6 @@ Configuration files are stored in the `configs/` directory. Examples are provide
 - Anvil (Local Development): `anvil-example.json`
 - Fuji (Testnet): `fuji-example.json`
 - Avalanche (Mainnet): `avalanche-example.json`
-- L2 Configuration: `l2-example.json`
 - Validator Configuration: `validator-example.json`
 
 These files should be customized for your specific deployment needs.
@@ -84,7 +82,6 @@ The deployment scripts are stored in the `script/` directory:
 
 - `DeployVaultFullX.s.sol`: Deploys a vault with its delegator and slasher components
 - `DeployMiddlewareX.s.sol`: Deploys L1 middleware components
-- `DeployAvaxL2X.s.sol`: Deploys L2 middleware components for Avalanche
 - `DeployValidatorX.s.sol`: Deploys validator contracts
 
 ## Deployment Process
@@ -113,19 +110,7 @@ forge script script/DeployMiddlewareX.s.sol:DeployMiddlewareX \
   "fuji-example.json" "fuji"
 ```
 
-### 3. Deploy L2 Middleware
-
-```sh
-forge script script/DeployAvaxL2X.s.sol:DeployAvaxL2X \
-  --rpc-url $FUJI_RPC_URL \
-  --private-key $PRIVATE_KEY \
-  --broadcast \
-  --verify \
-  --sig "run(string,string)" \
-  "l2-example.json" "fuji"
-```
-
-### 4. Deploy Validator
+### 3. Deploy Validator
 
 ```sh
 forge script script/DeployValidatorX.s.sol:DeployValidatorX \
