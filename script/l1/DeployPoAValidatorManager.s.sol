@@ -18,11 +18,7 @@ contract DeployPoAValidatorManager is Script {
     function readInput(
         string memory input
     ) internal view returns (string memory) {
-        string memory path = string.concat(
-            vm.projectRoot(),
-            "/script/balancer/configs/",
-            input
-        );
+        string memory path = string.concat(vm.projectRoot(), "/", input);
         return vm.readFile(path);
     }
 
