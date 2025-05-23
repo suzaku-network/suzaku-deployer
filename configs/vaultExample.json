@@ -1,5 +1,5 @@
 {
-    "owner": "0x2811086Bd8962C536264e711470f7ef9A783a5eB",
+    "owner": "your_vault_owner_address",
     "collateralAsset": "0x59fbBa1845690Fb202d69a77CFEc5564df12D3DE",
     "epochDuration": "3600",
     "depositWhitelist": false,
@@ -27,12 +27,12 @@
       "operatorL1OptInService": "0x4036D99c3a1210d669f56E7eD71816D6696c05Cb"
     },
     "rolesConfig": {
-      "depositWhitelistSetRoleHolder": "0x2811086Bd8962C536264e711470f7ef9A783a5eB",
-      "depositLimitSetRoleHolder": "0x2811086Bd8962C536264e711470f7ef9A783a5eB",
-      "depositorWhitelistRoleHolder": "0x2811086Bd8962C536264e711470f7ef9A783a5eB",
-      "isDepositLimitSetRoleHolder": "0x2811086Bd8962C536264e711470f7ef9A783a5eB",
-      "l1LimitSetRoleHolders": "0xC15adc0C87db428B9FC0Bb3246e7dEb2A991aa6E",
-      "operatorL1SharesSetRoleHolders": "0xC15adc0C87db428B9FC0Bb3246e7dEb2A991aa6E"
+      "depositWhitelistSetRoleHolder": "your_vault_owner_address",
+      "depositLimitSetRoleHolder": "your_vault_owner_address",
+      "depositorWhitelistRoleHolder": "your_vault_owner_address",
+      "isDepositLimitSetRoleHolder": "your_vault_owner_address",
+      "l1LimitSetRoleHolders": "your_l1_owner_address",
+      "operatorL1SharesSetRoleHolders": "your_l1_owner_address"
     }
   }
   
