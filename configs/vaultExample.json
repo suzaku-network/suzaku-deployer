@@ -1,38 +1,38 @@
 {
-    "owner": "your_vault_owner_address",
-    "collateralAsset": "0x59fbBa1845690Fb202d69a77CFEc5564df12D3DE",
-    "epochDuration": "3600",
-    "depositWhitelist": false,
-    "depositLimit": "1000000000000000000000",
-    "initialVaultVersion": 1,
-    "name": "Staked AVAX",
-    "symbol": "sAVAX",
-    "delegatorConfig": {
-      "delegatorIndex": 0,
-      "operator": "0x0000000000000000000000000000000000000000",
-      "resolverEpochsDelay": 10
-    },
-    "slasherConfig": {
-      "slasherIndex": 0,
-      "vetoDuration": 600,
-      "includeSlasher": false
-    },
-    "factoryConfig": {
-      "vaultFactory": "0x3D954f9aC22081327A4fBE29BfB99132661bD9C3",
-      "delegatorFactory": "0xBF5097f04230dc9c47Ae5c2B29AcB9802088c4A9",
-      "slasherFactory": "0x515B61Ecb2Fc80f39721Fd950507d7229D267fFb",
-      "l1Registry": "0x96a7389543d84a93f2fBE90D5d09eF1B0c30F84b",
-      "operatorRegistry": "0xcBAf6eb3d1F557f4cFF5c2531c0689B582ce0420",
-      "operatorVaultOptInService": "0xA1E4764eC99fC616A69930c45651643dFC58DD0d",
-      "operatorL1OptInService": "0x4036D99c3a1210d669f56E7eD71816D6696c05Cb"
-    },
-    "rolesConfig": {
-      "depositWhitelistSetRoleHolder": "your_vault_owner_address",
-      "depositLimitSetRoleHolder": "your_vault_owner_address",
-      "depositorWhitelistRoleHolder": "your_vault_owner_address",
-      "isDepositLimitSetRoleHolder": "your_vault_owner_address",
-      "l1LimitSetRoleHolders": "your_l1_owner_address",
-      "operatorL1SharesSetRoleHolders": "your_l1_owner_address"
-    }
+  "owner": "your_vault_owner_address",
+  "collateralAsset": "0x59fbBa1845690Fb202d69a77CFEc5564df12D3DE",
+  "epochDuration": "3600",
+  "depositWhitelist": false,
+  "depositLimit": "1000000000000000000000",
+  "initialVaultVersion": 1,
+  "name": "Staked AVAX",
+  "symbol": "sAVAX",
+  "delegatorConfig": {
+    "delegatorIndex": 0,
+    "operator": "0x0000000000000000000000000000000000000000",
+    "resolverEpochsDelay": 10
+  },
+  "slasherConfig": {
+    "slasherIndex": 0,
+    "vetoDuration": 600,
+    "includeSlasher": false
+  },
+  "factoryConfig": {
+    "vaultFactory": "0xC3b09a650c78daFb79e3C5B782402C8dc523fE88",
+    "delegatorFactory": "0xC11D12ea4A2dcf67509A488585ff5120DccDceaA",
+    "slasherFactory": "0x143e7fe257010A3855DFfacD5dC0BFBAb181b8f4",
+    "l1Registry": "0xB9826Bbf0deB10cC3924449B93F418db6b16be36",
+    "operatorRegistry": "0x46D45D6be6214F6bd8124187caD1a5302755d7A2",
+    "operatorVaultOptInService": "0xC30c9f7482B2ED82d0532812285295f8b7453941",
+    "operatorL1OptInService": "0x0360C1cB32A20D97b358538D9Db71339ce2c9592"
+  },
+  "rolesConfig": {
+    "depositWhitelistSetRoleHolder": "your_vault_owner_address",
+    "depositLimitSetRoleHolder": "your_vault_owner_address",
+    "depositorWhitelistRoleHolder": "your_vault_owner_address",
+    "isDepositLimitSetRoleHolder": "your_vault_owner_address",
+    "l1LimitSetRoleHolders": "your_l1_owner_address",
+    "operatorL1SharesSetRoleHolders": "your_l1_owner_address"
   }
+}
   

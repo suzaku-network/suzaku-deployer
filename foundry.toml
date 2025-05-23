@@ -10,17 +10,13 @@ via_ir = true
 ffi = true
 fs_permissions = [{ access = "read-write", path = "./" }]
 
-
 [rpc_endpoints]
 localhost = "http://localhost:8545"
-fuji = "${FUJI_RPC_URL}"
-avalanche = "${AVALANCHE_RPC_URL}"
-sepolia = "${SEPOLIA_RPC_URL}"
-ethereum = "${ETHEREUM_RPC_URL}"
-anvil = "http://localhost:8545"
+avalanche = "https://api.avax.network/ext/bc/C/rpc"
+fuji = "https://api.avax-test.network/ext/bc/C/rpc"
 
 [etherscan]
-fuji = { key = "${ETHERSCAN_API_KEY}" }
-avalanche = { key = "${ETHERSCAN_API_KEY}" }
-sepolia = { key = "${ETHERSCAN_API_KEY}" }
-ethereum = { key = "${ETHERSCAN_API_KEY}" } 
+fuji = { key = "${SNOWTRACE_API_KEY}" }
+avalanche = { key = "${SNOWTRACE_API_KEY}" }
+sepolia = { key = "${SNOWTRACE_API_KEY}" }
+ethereum = { key = "${SNOWTRACE_API_KEY}" } 

@@ -18,7 +18,7 @@ contract DeployVaultFull is Script {
     ) internal view returns (string memory) {
         string memory path = string.concat(
             vm.projectRoot(),
-            "/script/core/configs/",
+            "/configs/",
             input
         );
         return vm.readFile(path);
