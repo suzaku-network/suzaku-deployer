@@ -31,73 +31,73 @@ contract DeployVaultFull is Script {
 
         // Parse JSON into VaultConfig struct
         VaultConfig memory vaultCfg;
-        vaultCfg.owner = json.readAddress(".owner");
-        vaultCfg.collateralAsset = json.readAddress(".collateralAsset");
-        vaultCfg.epochDuration = uint48(json.readUint(".epochDuration"));
-        vaultCfg.depositWhitelist = json.readBool(".depositWhitelist");
-        vaultCfg.depositLimit = uint256(json.readUint(".depositLimit"));
+        vaultCfg.owner = json.readAddress(".roles.vaultOwner_vault");
+        vaultCfg.collateralAsset = json.readAddress(".collateral.underlyingToken");
+        vaultCfg.epochDuration = uint48(json.readUint(".vault.epochDuration"));
+        vaultCfg.depositWhitelist = json.readBool(".vault.depositWhitelist");
+        vaultCfg.depositLimit = uint256(json.readUint(".vault.depositLimit"));
         vaultCfg.initialVaultVersion = uint16(
-            json.readUint(".initialVaultVersion")
+            json.readUint(".vault.initialVaultVersion")
         );
-        vaultCfg.name = json.readString(".name");
-        vaultCfg.symbol = json.readString(".symbol");
+        vaultCfg.name = json.readString(".vault.name");
+        vaultCfg.symbol = json.readString(".vault.symbol");
 
         // Parse DelegatorConfig
         vaultCfg.delegatorConfig = DelegatorConfig({
             delegatorIndex: uint16(
-                json.readUint(".delegatorConfig.delegatorIndex")
+                json.readUint(".vault.delegatorConfig.delegatorIndex")
             ),
-            operator: json.readAddress(".delegatorConfig.operator"),
+            operator: address(0),
             resolverEpochsDelay: uint32(
-                json.readUint(".delegatorConfig.resolverEpochsDelay")
+                json.readUint(".vault.delegatorConfig.resolverEpochsDelay")
             )
         });
 
         // Parse SlasherConfig
         vaultCfg.slasherConfig = SlasherConfig({
-            slasherIndex: uint64(json.readUint(".slasherConfig.slasherIndex")),
-            vetoDuration: uint48(json.readUint(".slasherConfig.vetoDuration")),
-            includeSlasher: json.readBool(".slasherConfig.includeSlasher")
+            slasherIndex: uint64(json.readUint(".vault.slasherConfig.slasherIndex")),
+            vetoDuration: uint48(json.readUint(".vault.slasherConfig.vetoDuration")),
+            includeSlasher: json.readBool(".vault.slasherConfig.includeSlasher")
         });
 
         // Parse FactoryConfig
         vaultCfg.factoryConfig = FactoryConfig({
-            vaultFactory: json.readAddress(".factoryConfig.vaultFactory"),
+            vaultFactory: json.readAddress(".deployed.vaultFactory"),
             delegatorFactory: json.readAddress(
-                ".factoryConfig.delegatorFactory"
+                ".deployed.delegatorFactory"
             ),
-            slasherFactory: json.readAddress(".factoryConfig.slasherFactory"),
-            l1Registry: json.readAddress(".factoryConfig.l1Registry"),
+            slasherFactory: json.readAddress(".deployed.slasherFactory"),
+            l1Registry: json.readAddress(".deployed.l1Registry"),
             operatorRegistry: json.readAddress(
-                ".factoryConfig.operatorRegistry"
+                ".deployed.operatorRegistry"
             ),
             operatorVaultOptInService: json.readAddress(
-                ".factoryConfig.operatorVaultOptInService"
+                ".deployed.operatorVaultOptInService"
             ),
             operatorL1OptInService: json.readAddress(
-                ".factoryConfig.operatorL1OptInService"
+                ".deployed.operatorL1OptInService"
             )
         });
 
         // Parse RolesConfig
         vaultCfg.rolesConfig = RolesConfig({
             depositWhitelistSetRoleHolder: json.readAddress(
-                ".rolesConfig.depositWhitelistSetRoleHolder"
+                ".roles.depositWhitelistSetRoleHolder_vault"
             ),
             depositLimitSetRoleHolder: json.readAddress(
-                ".rolesConfig.depositLimitSetRoleHolder"
+                ".roles.depositLimitSetRoleHolder_vault"
             ),
             depositorWhitelistRoleHolder: json.readAddress(
-                ".rolesConfig.depositorWhitelistRoleHolder"
+                ".roles.depositorWhitelistRoleHolder_vault"
             ),
             isDepositLimitSetRoleHolder: json.readAddress(
-                ".rolesConfig.isDepositLimitSetRoleHolder"
+                ".roles.isDepositLimitSetRoleHolder_vault"
             ),
             l1LimitSetRoleHolders: json.readAddress(
-                ".rolesConfig.l1LimitSetRoleHolders"
+                ".roles.l1LimitSetRoleHolders_delegator"
             ),
             operatorL1SharesSetRoleHolders: json.readAddress(
-                ".rolesConfig.operatorL1SharesSetRoleHolders"
+                ".roles.operatorL1SharesSetRoleHolders_delegator"
             )
         });
 

@@ -26,16 +26,16 @@ contract DeployUpgradePoAToBalancer is Script {
         string memory jsonData = readInput(inputJsonPath);
 
         PoAUpgradeConfig memory balancerConfig;
-        balancerConfig.proxyAddress = jsonData.readAddress(".proxyAddress");
+        balancerConfig.proxyAddress = jsonData.readAddress(".deployed.proxyAddress");
         balancerConfig.validatorManagerOwnerAddress = jsonData.readAddress(
-            ".validatorManagerOwnerAddress"
+            ".roles.validatorManagerOwner_balancer"
         );
         balancerConfig.initialSecurityModuleMaxWeight = uint64(
-            jsonData.readUint(".initialSecurityModuleMaxWeight")
+            jsonData.readUint(".balancer.initialSecurityModuleMaxWeight")
         );
 
         string[] memory rawValidators = jsonData.readStringArray(
-            ".migratedValidations"
+            ".balancer.migratedValidations"
         );
         balancerConfig.migratedValidations = new bytes32[](
             rawValidators.length
@@ -46,12 +46,12 @@ contract DeployUpgradePoAToBalancer is Script {
             );
         }
 
-        balancerConfig.l1ID = bytes32(jsonData.readBytes32(".l1ID"));
+        balancerConfig.l1ID = bytes32(jsonData.readBytes32(".balancer.l1ID"));
         balancerConfig.churnPeriodSeconds = uint64(
-            jsonData.readUint(".churnPeriodSeconds")
+            jsonData.readUint(".balancer.churnPeriodSeconds")
         );
         balancerConfig.maximumChurnPercentage = uint8(
-            jsonData.readUint(".maximumChurnPercentage")
+            jsonData.readUint(".balancer.maximumChurnPercentage")
         );
 
         balancerConfig.proxyAdminOwnerAddress = vm.addr(proxyAdminOwnerKey);

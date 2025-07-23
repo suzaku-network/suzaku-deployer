@@ -1,23 +1,35 @@
 {
-  "owner": "your_vault_owner_address",
-  "collateralAsset": "0x59fbBa1845690Fb202d69a77CFEc5564df12D3DE",
-  "epochDuration": "3600",
-  "depositWhitelist": false,
-  "depositLimit": "1000000000000000000000",
-  "initialVaultVersion": 1,
-  "name": "Staked AVAX",
-  "symbol": "sAVAX",
-  "delegatorConfig": {
-    "delegatorIndex": 0,
-    "operator": "0x0000000000000000000000000000000000000000",
-    "resolverEpochsDelay": 10
+  "factoriesFile": "protocolExample.json",
+  "vault": {
+    "name": "Staked AVAX",
+    "symbol": "sAVAX",
+    "epochDuration": 3600,
+    "depositWhitelist": false,
+    "depositLimit": "1000000000000000000000",
+    "initialVaultVersion": 1,
+    "delegatorConfig": {
+      "delegatorIndex": 0,
+      "resolverEpochsDelay": 10
+    },
+    "slasherConfig": {
+      "slasherIndex": 0,
+      "vetoDuration": 600,
+      "includeSlasher": false
+    }
   },
-  "slasherConfig": {
-    "slasherIndex": 0,
-    "vetoDuration": 600,
-    "includeSlasher": false
+  "collateral": {
+    "underlyingToken": "0x59fbBa1845690Fb202d69a77CFEc5564df12D3DE"
   },
-  "factoryConfig": {
+  "roles": {
+    "vaultOwner_vault": "your_vault_owner_address",
+    "depositWhitelistSetRoleHolder_vault": "your_vault_owner_address",
+    "depositLimitSetRoleHolder_vault": "your_vault_owner_address",
+    "depositorWhitelistRoleHolder_vault": "your_vault_owner_address",
+    "isDepositLimitSetRoleHolder_vault": "your_vault_owner_address",
+    "l1LimitSetRoleHolders_delegator": "your_l1_owner_address",
+    "operatorL1SharesSetRoleHolders_delegator": "your_l1_owner_address"
+  },
+  "deployed": {
     "vaultFactory": "0xC3b09a650c78daFb79e3C5B782402C8dc523fE88",
     "delegatorFactory": "0xC11D12ea4A2dcf67509A488585ff5120DccDceaA",
     "slasherFactory": "0x143e7fe257010A3855DFfacD5dC0BFBAb181b8f4",
@@ -25,14 +37,6 @@
     "operatorRegistry": "0x46D45D6be6214F6bd8124187caD1a5302755d7A2",
     "operatorVaultOptInService": "0xC30c9f7482B2ED82d0532812285295f8b7453941",
     "operatorL1OptInService": "0x0360C1cB32A20D97b358538D9Db71339ce2c9592"
-  },
-  "rolesConfig": {
-    "depositWhitelistSetRoleHolder": "your_vault_owner_address",
-    "depositLimitSetRoleHolder": "your_vault_owner_address",
-    "depositorWhitelistRoleHolder": "your_vault_owner_address",
-    "isDepositLimitSetRoleHolder": "your_vault_owner_address",
-    "l1LimitSetRoleHolders": "your_l1_owner_address",
-    "operatorL1SharesSetRoleHolders": "your_l1_owner_address"
   }
 }
   

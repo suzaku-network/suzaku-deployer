@@ -43,8 +43,9 @@ The deployment process is divided into several steps that should be executed in 
 
 2. **Vault Deployment**: Deploy vaults using externally provided factories and registries
 3. **Middleware L1 Deployment**: Deploy the L1 middleware components
-4. **Validator Deployment**: Deploy validators connected to the middleware
-5. **Upgrade Deployment**: Upgrade PoA validators to Balancer validators (optional)
+4. **Rewards Deployment**: Deploy the rewards and uptime tracking system
+5. **Validator Deployment**: Deploy validators connected to the middleware
+6. **Upgrade Deployment**: Upgrade PoA validators to Balancer validators (optional)
 
 Each step saves its deployment artifacts that are used by subsequent steps.
 
@@ -56,6 +57,7 @@ Configuration files are stored in the `configs/` directory. Examples are provide
 - Avalanche (Mainnet): `avalanche-example.json`
 - Vault Configuration: `vaultExample.json`
 - Middleware Configuration: `middlewareExample.json`
+- Rewards Configuration: `rewardsExample.json`
 - Balancer Upgrade Configuration: `balancerExample.json`
 
 These files should be customized for your specific deployment needs.
@@ -88,6 +90,7 @@ The deployment scripts are stored in the `script/` directory:
 
 - `script/curator/DeployCurator.s.sol`: Deploys a vault with its delegator and slasher components
 - `script/l1/DeployMiddleware.s.sol`: Deploys L1 middleware components
+- `script/l1/DeployRewards.s.sol`: Deploys rewards and uptime tracking contracts
 - `script/l1/DeployPoAValidatorManager.s.sol`: Deploys PoA validator manager contracts
 - `script/l1/UpgradePoAToBalancer.s.sol`: Upgrades PoA validators to Balancer validators
 
@@ -118,7 +121,18 @@ forge script script/l1/DeployMiddleware.s.sol:DeployMiddlewareL1 \
   --verify
 ```
 
-### 3. Deploy Validator
+### 3. Deploy Rewards
+
+```sh
+forge script script/l1/DeployRewards.s.sol:DeployRewardsL1 \
+  --sig "run(string)" "rewardsExample.json" \
+  --broadcast \
+  --rpc-url fuji \
+  --private-key "$PRIVATE_KEY" \
+  --verify
+```
+
+### 4. Deploy Validator
 
 ```sh
 forge script script/l1/DeployPoAValidatorManager.s.sol:DeployPoAValidatorManager \
@@ -129,7 +143,7 @@ forge script script/l1/DeployPoAValidatorManager.s.sol:DeployPoAValidatorManager
   --verify
 ```
 
-### 4. Upgrade PoA to Balancer (Optional)
+### 5. Upgrade PoA to Balancer (Optional)
 
 To upgrade an existing PoA validator to a Balancer validator:
 
@@ -148,4 +162,5 @@ Deployment artifacts are saved in the `deployments/` directory with the followin
 
 - Vaults: `vault-{network}-{timestamp}.json` and `vault-{network}-latest.json`
 - Middleware: `middleware-{network}-{timestamp}.json` and `middleware-{network}-latest.json`
+- Rewards: `rewards.json` in `deployments/{chainId}/{date}/` directory structure
 - Upgrades: `poAUpgrade.json` in `deployments/{chainId}/{date}/` directory structure

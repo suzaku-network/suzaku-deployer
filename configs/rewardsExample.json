@@ -1,0 +1,17 @@
+{
+  "factoriesFile": "protocolExample.json",
+  "rewards": {
+    "protocolFee": 1000,
+    "operatorFee": 2000,
+    "curatorFee": 1000,
+    "minRequiredUptime": 11520
+  },
+  "roles": {
+    "rewardsAdmin_rewards": "your_admin_address",
+    "protocolOwner_rewards": "your_protocol_owner_address"
+  },
+  "deployed": {
+    "l1Middleware": "0x0000000000000000000000000000000000000000",
+    "l1ChainID": "0x0000000000000000000000000000000000000000000000000000000000000000"
+  }
+} 

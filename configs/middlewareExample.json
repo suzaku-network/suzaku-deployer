@@ -1,14 +1,22 @@
 {
-  "l1MiddlewareOwnerAddress": "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
-  "validatorManager": "0x8464135c8F25Da09e49BC8782676a84730C318bC",
-  "operatorRegistry": "0x46D45D6be6214F6bd8124187caD1a5302755d7A2",
-  "vaultFactory": "0xC3b09a650c78daFb79e3C5B782402C8dc523fE88",
-  "operatorL1OptIn": "0x0360C1cB32A20D97b358538D9Db71339ce2c9592",
-  "primaryAsset": "0x59fbBa1845690Fb202d69a77CFEc5564df12D3DE",
-  "primaryAssetMaxStake": 5000000000000000000000,
-  "primaryAssetMinStake": 100000000000000000000,
-  "primaryAssetWeightScaleFactor": 2e16,
-  "epochDuration": 1800,
-  "slashingWindow": 2100,
-  "stakeUpdateWindow": 900
+  "factoriesFile": "protocolExample.json",
+  "middleware": {
+    "primaryAssetMaxStake": 5000000000000000000000,
+    "primaryAssetMinStake": 100000000000000000000,
+    "primaryAssetWeightScaleFactor": 20000000000000000,
+    "epochDuration": 1800,
+    "slashingWindow": 2100,
+    "stakeUpdateWindow": 900,
+    "vaultRemovalEpochDelay": 24
+  },
+  "roles": {
+    "l1MiddlewareOwner_middleware": "0x70997970c51812dc3a010c7d01b50e0d17dc79c8"
+  },
+  "deployed": {
+    "validatorManager": "0x8464135c8F25Da09e49BC8782676a84730C318bC",
+    "operatorRegistry": "0x46D45D6be6214F6bd8124187caD1a5302755d7A2",
+    "vaultFactory": "0xC3b09a650c78daFb79e3C5B782402C8dc523fE88",
+    "operatorL1OptIn": "0x0360C1cB32A20D97b358538D9Db71339ce2c9592",
+    "primaryAsset": "0x59fbBa1845690Fb202d69a77CFEc5564df12D3DE"
+  }
 }

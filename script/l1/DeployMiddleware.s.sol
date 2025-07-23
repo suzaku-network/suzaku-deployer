@@ -25,36 +25,39 @@ contract DeployMiddlewareL1 is Script {
         // Parse fields into MiddlewareConfig
         MiddlewareConfig memory middlewareConfig;
         middlewareConfig.l1MiddlewareOwnerAddress = json.readAddress(
-            ".l1MiddlewareOwnerAddress"
+            ".roles.l1MiddlewareOwner_middleware"
         );
 
         middlewareConfig.validatorManager = json.readAddress(
-            ".validatorManager"
+            ".deployed.validatorManager"
         );
         middlewareConfig.operatorRegistry = json.readAddress(
-            ".operatorRegistry"
+            ".deployed.operatorRegistry"
         );
-        middlewareConfig.vaultFactory = json.readAddress(".vaultFactory");
-        middlewareConfig.operatorL1OptIn = json.readAddress(".operatorL1OptIn");
+        middlewareConfig.vaultFactory = json.readAddress(".deployed.vaultFactory");
+        middlewareConfig.operatorL1OptIn = json.readAddress(".deployed.operatorL1OptIn");
 
-        middlewareConfig.primaryAsset = json.readAddress(".primaryAsset");
+        middlewareConfig.primaryAsset = json.readAddress(".deployed.primaryAsset");
         middlewareConfig.primaryAssetMaxStake = json.readUint(
-            ".primaryAssetMaxStake"
+            ".middleware.primaryAssetMaxStake"
         );
         middlewareConfig.primaryAssetMinStake = json.readUint(
-            ".primaryAssetMinStake"
+            ".middleware.primaryAssetMinStake"
         );
         middlewareConfig.primaryAssetWeightScaleFactor = json.readUint(
-            ".primaryAssetWeightScaleFactor"
+            ".middleware.primaryAssetWeightScaleFactor"
         );
         middlewareConfig.epochDuration = uint48(
-            json.readUint(".epochDuration")
+            json.readUint(".middleware.epochDuration")
         );
         middlewareConfig.slashingWindow = uint48(
-            json.readUint(".slashingWindow")
+            json.readUint(".middleware.slashingWindow")
         );
         middlewareConfig.stakeUpdateWindow = uint48(
-            json.readUint(".stakeUpdateWindow")
+            json.readUint(".middleware.stakeUpdateWindow")
+        );
+        middlewareConfig.vaultRemovalEpochDelay = uint48(
+            json.readUint(".middleware.vaultRemovalEpochDelay")
         );
 
         // Deploy
@@ -135,6 +138,11 @@ contract DeployMiddlewareL1 is Script {
             label,
             "stakeUpdateWindow",
             middlewareConfig.stakeUpdateWindow
+        );
+        data = vm.serializeUint(
+            label,
+            "vaultRemovalEpochDelay",
+            middlewareConfig.vaultRemovalEpochDelay
         );
 
         // newly deployed

@@ -30,13 +30,13 @@ contract DeployPoAValidatorManager is Script {
         string memory jsonData = readInput(inputJsonPath);
 
         PoAUpgradeConfig memory poaConfig;
-        poaConfig.proxyAddress = jsonData.readAddress(".proxyAddress");
+        poaConfig.proxyAddress = jsonData.readAddress(".deployed.proxyAddress");
         poaConfig.initialSecurityModuleMaxWeight = uint64(
-            jsonData.readUint(".initialSecurityModuleMaxWeight")
+            jsonData.readUint(".balancer.initialSecurityModuleMaxWeight")
         );
 
         string[] memory rawValidators = jsonData.readStringArray(
-            ".migratedValidations"
+            ".balancer.migratedValidations"
         );
         poaConfig.migratedValidations = new bytes32[](rawValidators.length);
         for (uint256 i = 0; i < rawValidators.length; i++) {
@@ -45,12 +45,12 @@ contract DeployPoAValidatorManager is Script {
             );
         }
 
-        poaConfig.l1ID = bytes32(jsonData.readBytes32(".l1ID"));
+        poaConfig.l1ID = bytes32(jsonData.readBytes32(".balancer.l1ID"));
         poaConfig.churnPeriodSeconds = uint64(
-            jsonData.readUint(".churnPeriodSeconds")
+            jsonData.readUint(".balancer.churnPeriodSeconds")
         );
         poaConfig.maximumChurnPercentage = uint8(
-            jsonData.readUint(".maximumChurnPercentage")
+            jsonData.readUint(".balancer.maximumChurnPercentage")
         );
 
         poaConfig.proxyAdminOwnerAddress = vm.addr(proxyAdminOwnerKey);
