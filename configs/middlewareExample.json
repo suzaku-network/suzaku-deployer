@@ -10,7 +10,7 @@
     "vaultRemovalEpochDelay": 24
   },
   "roles": {
-    "l1MiddlewareOwner_middleware": "0x70997970c51812dc3a010c7d01b50e0d17dc79c8"
+    "middlewareOwner_middleware": "0x70997970c51812dc3a010c7d01b50e0d17dc79c8"
   },
   "deployed": {
     "validatorManager": "0x8464135c8F25Da09e49BC8782676a84730C318bC",

@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.25;
 
-import {stdJson} from "forge-std/StdJson.sol";
 import {Script, console2} from "forge-std/Script.sol";
-
+import {stdJson} from "forge-std/StdJson.sol";
+import {
+    AvalancheL1Middleware,
+    AvalancheL1MiddlewareSettings
+} from "@suzaku/core/src/contracts/middleware/AvalancheL1Middleware.sol";
+import {MiddlewareVaultManager} from "@suzaku/core/src/contracts/middleware/MiddlewareVaultManager.sol";
 import {MiddlewareConfig} from "@suzaku/core/script/middleware/MiddlewareL1Types.s.sol";
-import {DeployTestAvalancheL1Middleware} from "@suzaku/core/script/middleware/MiddlewareL1.s.sol";
-
-import {DateTimeLib} from "../libraries/DateTimeLib.sol";
 
 contract DeployMiddlewareL1 is Script {
     using stdJson for string;
@@ -15,144 +16,97 @@ contract DeployMiddlewareL1 is Script {
     function readInput(
         string memory input
     ) internal view returns (string memory) {
-        string memory path = string.concat(vm.projectRoot(), "/", input);
+        string memory path = string.concat(
+            vm.projectRoot(),
+            "/",
+            input
+        );
         return vm.readFile(path);
     }
 
     function run(string memory input) external {
+        // Read the JSON file
         string memory json = readInput(input);
 
-        // Parse fields into MiddlewareConfig
+        // Parse JSON into MiddlewareConfig struct
         MiddlewareConfig memory middlewareConfig;
-        middlewareConfig.l1MiddlewareOwnerAddress = json.readAddress(
-            ".roles.l1MiddlewareOwner_middleware"
-        );
-
-        middlewareConfig.validatorManager = json.readAddress(
-            ".deployed.validatorManager"
-        );
-        middlewareConfig.operatorRegistry = json.readAddress(
-            ".deployed.operatorRegistry"
-        );
+        middlewareConfig.middlewareOwnerAddress = json.readAddress(".roles.middlewareOwner_middleware");
+        middlewareConfig.validatorManager = json.readAddress(".deployed.validatorManager");
+        middlewareConfig.operatorRegistry = json.readAddress(".deployed.operatorRegistry");
         middlewareConfig.vaultFactory = json.readAddress(".deployed.vaultFactory");
         middlewareConfig.operatorL1OptIn = json.readAddress(".deployed.operatorL1OptIn");
-
         middlewareConfig.primaryAsset = json.readAddress(".deployed.primaryAsset");
-        middlewareConfig.primaryAssetMaxStake = json.readUint(
-            ".middleware.primaryAssetMaxStake"
-        );
-        middlewareConfig.primaryAssetMinStake = json.readUint(
-            ".middleware.primaryAssetMinStake"
-        );
-        middlewareConfig.primaryAssetWeightScaleFactor = json.readUint(
-            ".middleware.primaryAssetWeightScaleFactor"
-        );
-        middlewareConfig.epochDuration = uint48(
-            json.readUint(".middleware.epochDuration")
-        );
-        middlewareConfig.slashingWindow = uint48(
-            json.readUint(".middleware.slashingWindow")
-        );
-        middlewareConfig.stakeUpdateWindow = uint48(
-            json.readUint(".middleware.stakeUpdateWindow")
-        );
-        middlewareConfig.vaultRemovalEpochDelay = uint48(
-            json.readUint(".middleware.vaultRemovalEpochDelay")
-        );
+        middlewareConfig.primaryAssetMaxStake = json.readUint(".middleware.primaryAssetMaxStake");
+        middlewareConfig.primaryAssetMinStake = json.readUint(".middleware.primaryAssetMinStake");
+        middlewareConfig.primaryAssetWeightScaleFactor = json.readUint(".middleware.primaryAssetWeightScaleFactor");
+        middlewareConfig.epochDuration = uint48(json.readUint(".middleware.epochDuration"));
+        middlewareConfig.slashingWindow = uint48(json.readUint(".middleware.slashingWindow"));
+        middlewareConfig.stakeUpdateWindow = uint48(json.readUint(".middleware.stakeUpdateWindow"));
+        middlewareConfig.vaultRemovalEpochDelay = uint48(json.readUint(".middleware.vaultRemovalEpochDelay"));
 
-        // Deploy
-        DeployTestAvalancheL1Middleware deploy = new DeployTestAvalancheL1Middleware();
-        (address middlewareL1, address vaultManager) = deploy
-            .executeMiddlewareL1Deployment(middlewareConfig);
+        // Execute deployment with fixed broadcasting
+        (address middlewareL1, address vaultManager) = executeMiddlewareL1DeploymentFixed(middlewareConfig);
 
-        // Write to JSON
-        string memory chainId = vm.toString(block.chainid);
-        string memory date = DateTimeLib.timestampToDate(block.timestamp);
-        string memory path = string.concat(
-            "./deployments/",
-            chainId,
-            "/",
-            date
+        // Write deployment data
+        string memory deploymentData = string.concat(
+            "{\"middleware\": \"", vm.toString(middlewareL1), "\", ",
+            "\"vaultManager\": \"", vm.toString(vaultManager), "\"}"
         );
-        vm.createDir(path, true);
+        
+        vm.writeFile("test_middleware_deployment.json", deploymentData);
+        console2.log("Middleware deployment completed. L1 Middleware:", middlewareL1);
+        console2.log("Vault Manager:", vaultManager);
+    }
 
-        string memory label = "Middleware";
-        string memory data = vm.serializeAddress(
-            label,
-            "l1MiddlewareOwnerAddress",
-            middlewareConfig.l1MiddlewareOwnerAddress
-        );
+    function executeMiddlewareL1DeploymentFixed(
+        MiddlewareConfig memory middlewareConfig
+    ) public returns (address middlewareL1, address vaultManager) {
+        vm.startBroadcast();
 
-        data = vm.serializeAddress(
-            label,
-            "validatorManager",
-            middlewareConfig.validatorManager
-        );
-        data = vm.serializeAddress(
-            label,
-            "operatorRegistry",
-            middlewareConfig.operatorRegistry
-        );
-        data = vm.serializeAddress(
-            label,
-            "vaultFactory",
-            middlewareConfig.vaultFactory
-        );
-        data = vm.serializeAddress(
-            label,
-            "operatorL1OptIn",
-            middlewareConfig.operatorL1OptIn
-        );
-
-        data = vm.serializeAddress(
-            label,
-            "primaryAsset",
-            middlewareConfig.primaryAsset
-        );
-        data = vm.serializeUint(
-            label,
-            "primaryAssetMaxStake",
-            middlewareConfig.primaryAssetMaxStake
-        );
-        data = vm.serializeUint(
-            label,
-            "primaryAssetMinStake",
-            middlewareConfig.primaryAssetMinStake
-        );
-        data = vm.serializeUint(
-            label,
-            "primaryAssetWeightScaleFactor",
+        // Deploy the AvalancheL1Middleware
+        AvalancheL1Middleware middleware = new AvalancheL1Middleware(
+            AvalancheL1MiddlewareSettings({
+                l1ValidatorManager: middlewareConfig.validatorManager,
+                operatorRegistry: middlewareConfig.operatorRegistry,
+                vaultRegistry: middlewareConfig.vaultFactory,
+                operatorL1Optin: middlewareConfig.operatorL1OptIn,
+                epochDuration: middlewareConfig.epochDuration,
+                slashingWindow: middlewareConfig.slashingWindow,
+                stakeUpdateWindow: middlewareConfig.stakeUpdateWindow
+            }),
+            middlewareConfig.middlewareOwnerAddress, // Set the owner
+            middlewareConfig.primaryAsset,
+            middlewareConfig.primaryAssetMaxStake,
+            middlewareConfig.primaryAssetMinStake,
             middlewareConfig.primaryAssetWeightScaleFactor
         );
-        data = vm.serializeUint(
-            label,
-            "epochDuration",
-            middlewareConfig.epochDuration
-        );
-        data = vm.serializeUint(
-            label,
-            "slashingWindow",
-            middlewareConfig.slashingWindow
-        );
-        data = vm.serializeUint(
-            label,
-            "stakeUpdateWindow",
-            middlewareConfig.stakeUpdateWindow
-        );
-        data = vm.serializeUint(
-            label,
-            "vaultRemovalEpochDelay",
+
+        // Deploy the MiddlewareVaultManager
+        MiddlewareVaultManager middlewareVaultManager = new MiddlewareVaultManager(
+            middlewareConfig.vaultFactory, 
+            middlewareConfig.middlewareOwnerAddress, 
+            address(middleware), 
             middlewareConfig.vaultRemovalEpochDelay
         );
 
-        // newly deployed
-        data = vm.serializeAddress(label, "middlewareL1", middlewareL1);
-        data = vm.serializeAddress(label, "vaultManager", vaultManager);
+        // Don't stop broadcast - just use prank to set the vault manager
+        // The broadcast context will maintain the same sender throughout
+        
+        vm.stopBroadcast();
+        
+        // Use prank to set vault manager as the owner
+        vm.prank(middlewareConfig.middlewareOwnerAddress);
+        middleware.setVaultManager(address(middlewareVaultManager));
 
-        string memory outFile = string.concat(path, "/l1Middleware.json");
-        vm.writeJson(data, outFile);
-        console2.log("Deployed L1 middleware to:", middlewareL1);
-        console2.log("Deployed VaultManager to:", vaultManager);
-        console2.log("Output JSON =>", outFile);
+        // Return addresses
+        middlewareL1 = address(middleware);
+        vaultManager = address(middlewareVaultManager);
+
+        console2.log("AvalancheL1Middleware deployed at:", middlewareL1);
+        console2.log("MiddlewareVaultManager deployed at:", vaultManager);
+        console2.log("Using validatorManager at:", middlewareConfig.validatorManager);
+        console2.log("Using operatorRegistry at:", middlewareConfig.operatorRegistry);
+        console2.log("Using vaultFactory at:", middlewareConfig.vaultFactory);
+        console2.log("Using operatorL1OptIn at:", middlewareConfig.operatorL1OptIn);
     }
 }

@@ -1,0 +1,41 @@
+{
+  "factoriesFile": "protocolExample.json",
+  "vault": {
+    "name": "Test Vault",
+    "symbol": "TV",
+    "epochDuration": 3600,
+    "depositWhitelist": false,
+    "depositLimit": "1000000000000000000000",
+    "initialVaultVersion": 1,
+    "delegatorConfig": {
+      "delegatorIndex": 0,
+      "resolverEpochsDelay": 10
+    },
+    "slasherConfig": {
+      "slasherIndex": 0,
+      "vetoDuration": 600,
+      "includeSlasher": false
+    }
+  },
+  "collateral": {
+    "underlyingToken": "0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f"
+  },
+  "roles": {
+    "vaultOwner_vault": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "depositWhitelistSetRoleHolder_vault": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "depositLimitSetRoleHolder_vault": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "depositorWhitelistRoleHolder_vault": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "isDepositLimitSetRoleHolder_vault": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "l1LimitSetRoleHolders_delegator": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "operatorL1SharesSetRoleHolders_delegator": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  },
+  "deployed": {
+    "vaultFactory": "0x34A1D3fff3958843C43aD80F30b94c510645C316",
+    "delegatorFactory": "0x90193C961A926261B756D1E5bb255e67ff9498A1",
+    "slasherFactory": "0xA8452Ec99ce0C64f20701dB7dD3abDb607c00496",
+    "l1Registry": "0xBb2180ebd78ce97360503434eD37fcf4a1Df61c3",
+    "operatorRegistry": "0xDB8cFf278adCCF9E9b5da745B44E754fC4EE3C76",
+    "operatorVaultOptInService": "0x50EEf481cae4250d252Ae577A09bF514f224C6C4",
+    "operatorL1OptInService": "0x62c20Aa1e0272312BC100b4e23B4DC1Ed96dD7D1"
+  }
+}

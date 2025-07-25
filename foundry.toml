@@ -10,6 +10,10 @@ via_ir = true
 ffi = true
 fs_permissions = [{ access = "read-write", path = "./" }]
 
+[profile.dev]
+optimizer = false
+sparse_mode = true
+
 [rpc_endpoints]
 localhost = "http://localhost:8545"
 avalanche = "https://api.avax.network/ext/bc/C/rpc"

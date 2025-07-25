@@ -11,7 +11,7 @@
     "protocolOwner_rewards": "your_protocol_owner_address"
   },
   "deployed": {
-    "l1Middleware": "0x0000000000000000000000000000000000000000",
-    "l1ChainID": "0x0000000000000000000000000000000000000000000000000000000000000000"
+    "middleware": "your_deployed_l1_middleware_address",
+    "l1ID": "your_deployed_l1_chain_id"
   }
 } 

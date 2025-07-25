@@ -26,12 +26,12 @@ contract DeployRewardsL1 is Script {
         RewardsConfig memory rewardsConfig;
         rewardsConfig.admin = json.readAddress(".roles.rewardsAdmin_rewards");
         rewardsConfig.protocolOwner = json.readAddress(".roles.protocolOwner_rewards");
-        rewardsConfig.l1Middleware = json.readAddress(".deployed.l1Middleware");
+        rewardsConfig.middleware = json.readAddress(".deployed.middleware");
         rewardsConfig.protocolFee = uint16(json.readUint(".rewards.protocolFee"));
         rewardsConfig.operatorFee = uint16(json.readUint(".rewards.operatorFee"));
         rewardsConfig.curatorFee = uint16(json.readUint(".rewards.curatorFee"));
         rewardsConfig.minRequiredUptime = json.readUint(".rewards.minRequiredUptime");
-        rewardsConfig.l1ChainID = json.readBytes32(".deployed.l1ChainID");
+        rewardsConfig.l1ID = json.readBytes32(".deployed.l1ID");
 
         // Deploy
         DeployRewards deploy = new DeployRewards();
@@ -63,8 +63,8 @@ contract DeployRewardsL1 is Script {
         );
         data = vm.serializeAddress(
             label,
-            "l1Middleware",
-            rewardsConfig.l1Middleware
+            "middleware",
+            rewardsConfig.middleware
         );
         data = vm.serializeUint(
             label,
@@ -88,8 +88,8 @@ contract DeployRewardsL1 is Script {
         );
         data = vm.serializeBytes32(
             label,
-            "l1ChainID",
-            rewardsConfig.l1ChainID
+            "l1ID",
+            rewardsConfig.l1ID
         );
 
         // newly deployed
