@@ -15,19 +15,13 @@ import {stdJson} from "forge-std/StdJson.sol";
 contract DeployPoAValidatorManager is Script {
     using stdJson for string;
 
-    function readInput(
-        string memory input
-    ) internal view returns (string memory) {
-        string memory path = string.concat(vm.projectRoot(), "/", input);
-        return vm.readFile(path);
-    }
-
     function run(
         string memory inputJsonPath,
         uint256 proxyAdminOwnerKey,
         uint256 validatorManagerOwnerKey
     ) external {
-        string memory jsonData = readInput(inputJsonPath);
+        string memory jsonPath = string.concat(vm.projectRoot(), "/configs/", inputJsonPath);
+        string memory jsonData = vm.readFile(jsonPath);
 
         PoAUpgradeConfig memory poaConfig;
         poaConfig.proxyAddress = jsonData.readAddress(".deployed.proxyAddress");
@@ -36,13 +30,11 @@ contract DeployPoAValidatorManager is Script {
         );
 
         string[] memory rawValidators = jsonData.readStringArray(
-            ".balancer.migratedValidations"
+            ".balancer.migratedValidators"
         );
-        poaConfig.migratedValidations = new bytes32[](rawValidators.length);
+        poaConfig.migratedValidators = new bytes[](rawValidators.length);
         for (uint256 i = 0; i < rawValidators.length; i++) {
-            poaConfig.migratedValidations[i] = vm.parseBytes32(
-                rawValidators[i]
-            );
+            poaConfig.migratedValidators[i] = vm.parseBytes(rawValidators[i]);
         }
 
         poaConfig.l1ID = bytes32(jsonData.readBytes32(".balancer.l1ID"));
@@ -65,6 +57,11 @@ contract DeployPoAValidatorManager is Script {
             proxyAdminOwnerKey
         );
         console2.log("Deployed PoA proxy at:", finalProxy);
+
+        // Update deployment file with the new validatorManager address
+        vm.writeJson(vm.toString(finalProxy), jsonPath, ".deployed.proxyAddress");
+
+        console2.log("Updated deployment file with validatorManager:", finalProxy);
 
         // vm.stopBroadcast();
     }

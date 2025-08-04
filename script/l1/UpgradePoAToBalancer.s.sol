@@ -12,21 +12,17 @@ import {DateTimeLib} from "../libraries/DateTimeLib.sol";
 contract DeployUpgradePoAToBalancer is Script {
     using stdJson for string;
 
-    function readInput(
-        string memory input
-    ) internal view returns (string memory) {
-        string memory path = string.concat(vm.projectRoot(), "/", input);
-        return vm.readFile(path);
-    }
-
     function run(
         string memory inputJsonPath,
         uint256 proxyAdminOwnerKey
     ) external {
-        string memory jsonData = readInput(inputJsonPath);
+        string memory jsonPath = string.concat(vm.projectRoot(), "/configs/", inputJsonPath);
+        string memory jsonData =  vm.readFile(jsonPath);
 
         PoAUpgradeConfig memory balancerConfig;
-        balancerConfig.proxyAddress = jsonData.readAddress(".deployed.proxyAddress");
+        balancerConfig.proxyAddress = jsonData.readAddress(
+            ".deployed.proxyAddress"
+        );
         balancerConfig.validatorManagerOwnerAddress = jsonData.readAddress(
             ".roles.validatorManagerOwner_balancer"
         );
@@ -35,13 +31,11 @@ contract DeployUpgradePoAToBalancer is Script {
         );
 
         string[] memory rawValidators = jsonData.readStringArray(
-            ".balancer.migratedValidations"
+            ".balancer.migratedValidators"
         );
-        balancerConfig.migratedValidations = new bytes32[](
-            rawValidators.length
-        );
+        balancerConfig.migratedValidators = new bytes[](rawValidators.length);
         for (uint256 i = 0; i < rawValidators.length; i++) {
-            balancerConfig.migratedValidations[i] = vm.parseBytes32(
+            balancerConfig.migratedValidators[i] = vm.parseBytes(
                 rawValidators[i]
             );
         }
