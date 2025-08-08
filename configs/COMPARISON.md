@@ -18,27 +18,27 @@ This appears to be the output from deploying factories and registries:
 
 ### 1. Variable Name Mismatches
 
-| What Scripts Expect | First JSON Has | Second JSON Has |
-|-------------------|----------------|-----------------|
-| `deployed.vaultFactory` | ❌ Missing | ✅ `vaultFactory` |
-| `deployed.delegatorFactory` | ❌ Missing | ✅ `delegatorFactory` |
-| `deployed.slasherFactory` | ❌ Missing | ✅ `slasherFactory` |
-| `deployed.l1Registry` | ❌ Missing | ✅ `l1Registry` |
-| `deployed.operatorRegistry` | ❌ Missing | ✅ `operatorRegistry` |
-| `deployed.operatorVaultOptInService` | ❌ Missing | ✅ `operatorVaultOptInService` |
-| `deployed.operatorL1OptInService` | ❌ Missing | ✅ `operatorL1OptInService` |
-| `deployed.operatorL1OptIn` | ❌ Missing | ✅ `operatorL1OptInService` (same address) |
-| `deployed.primaryAsset` | ✅ `collateral` | ❌ Missing |
-| `deployed.middleware` | ✅ `middleware` | ❌ Missing |
-| `deployed.l1ID` | ❌ Missing | ❌ Missing |
-| `deployed.validatorManager` | ✅ Has it | ❌ Missing |
+| What Scripts Expect                  | First JSON Has  | Second JSON Has                            |
+| ------------------------------------ | --------------- | ------------------------------------------ |
+| `deployed.vaultFactory`              | ❌ Missing      | ✅ `vaultFactory`                          |
+| `deployed.delegatorFactory`          | ❌ Missing      | ✅ `delegatorFactory`                      |
+| `deployed.slasherFactory`            | ❌ Missing      | ✅ `slasherFactory`                        |
+| `deployed.l1Registry`                | ❌ Missing      | ✅ `l1Registry`                            |
+| `deployed.operatorRegistry`          | ❌ Missing      | ✅ `operatorRegistry`                      |
+| `deployed.operatorVaultOptInService` | ❌ Missing      | ✅ `operatorVaultOptInService`             |
+| `deployed.operatorL1OptInService`    | ❌ Missing      | ✅ `operatorL1OptInService`                |
+| `deployed.operatorL1OptIn`           | ❌ Missing      | ✅ `operatorL1OptInService` (same address) |
+| `deployed.primaryCollateral`         | ✅ `collateral` | ❌ Missing                                 |
+| `deployed.middleware`                | ✅ `middleware` | ❌ Missing                                 |
+| `deployed.l1ID`                      | ❌ Missing      | ❌ Missing                                 |
+| `deployed.validatorManager`          | ✅ Has it       | ❌ Missing                                 |
 
 ### 2. Additional Variables
 
 First JSON `deployed` section has:
 - `collateral` - The collateral token address
 - `vault` - Deployed vault instance
-- `delegator` - Deployed delegator instance  
+- `delegator` - Deployed delegator instance
 - `middleware` - Deployed middleware instance
 - `vaultManager` - Deployed vault manager
 - `rewards` - Deployed rewards contract
@@ -67,10 +67,9 @@ These two JSONs should be merged. The `deployed` section should include:
   "operatorVaultOptInService": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
   "operatorL1OptInService": "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
   "operatorL1OptIn": "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6", // Same as above
-  
   // From first JSON (deployed instances)
   "collateral": "0x9f1ac54BEF0DD2f6f3462EA0fa94fC62300d3a8e",
-  "primaryAsset": "0x9f1ac54BEF0DD2f6f3462EA0fa94fC62300d3a8e", // Same as collateral
+  "primaryCollateral": "0x9f1ac54BEF0DD2f6f3462EA0fa94fC62300d3a8e", // Same as collateral
   "vault": "0x36658a07F03E3e9c1299a27d83653c38158e8C2b",
   "delegator": "0x6c38670602dF1fc4e438D4162188e3007344582C",
   "middleware": "0x9A9f2CCfdE556A7E9Ff0848998Aa4a0CFD8863AE", // Same as middleware
@@ -87,11 +86,11 @@ These two JSONs should be merged. The `deployed` section should include:
 
 1. **Separate Files**: Having factory addresses in a separate file makes deployment scripts fail because they expect everything in the `deployed` section.
 
-2. **Name Mismatches**: 
-   - `collateral` vs `primaryAsset` (scripts expect `primaryAsset`)
+2. **Name Mismatches**:
+   - `collateral` vs `primaryCollateral` (scripts expect `primaryCollateral`)
    - `middleware` vs `middleware` (scripts expect `middleware` for rewards)
    - `operatorL1OptInService` vs `operatorL1OptIn` (middleware script expects `operatorL1OptIn`)
 
 3. **Missing Fields**:
    - `l1ID` is required for rewards deployment
-   - Factory addresses are not in the main config's `deployed` section 
+   - Factory addresses are not in the main config's `deployed` section
