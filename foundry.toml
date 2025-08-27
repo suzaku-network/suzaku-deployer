@@ -20,7 +20,5 @@ avalanche = "https://api.avax.network/ext/bc/C/rpc"
 fuji = "https://api.avax-test.network/ext/bc/C/rpc"
 
 [etherscan]
-fuji = { key = "${SNOWTRACE_API_KEY}" }
-avalanche = { key = "${SNOWTRACE_API_KEY}" }
-sepolia = { key = "${SNOWTRACE_API_KEY}" }
-ethereum = { key = "${SNOWTRACE_API_KEY}" } 
+avalanche = { key = "${ETHERSCAN_API_KEY}", url = "https://api.etherscan.io/v2/api?chainid=43114" }
+fuji = { key = "${ETHERSCAN_API_KEY}", url = "https://api.etherscan.io/v2/api?chainid=43113" }

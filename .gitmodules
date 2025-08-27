@@ -1,3 +1,4 @@
 [submodule "lib/suzaku-core"]
 	path = lib/suzaku-core
 	url = git@github.com:suzaku-network/suzaku-core.git
+	branch = size-middleware

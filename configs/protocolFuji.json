@@ -1,25 +1,24 @@
-{
+  {
     "generalConfig": {
-      "owner": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+      "owner": "0x2811086Bd8962C536264e711470f7ef9A783a5eB",
       "initialVaultVersion": 1,
       "defaultIncludeSlasher": false
     },
     "factoryConfig": {
-      "vaultFactory": "0x0000000000000000000000000000000000000001",
-      "delegatorFactory": "0x0000000000000000000000000000000000000002",
-      "slasherFactory": "0x0000000000000000000000000000000000000003",
-      "l1Registry": "0x0000000000000000000000000000000000000004",
-      "operatorRegistry": "0x0000000000000000000000000000000000000005"
+      "vaultFactory": "0xC3b09a650c78daFb79e3C5B782402C8dc523fE88",
+      "delegatorFactory": "0xC11D12ea4A2dcf67509A488585ff5120DccDceaA",
+      "slasherFactory": "0x143e7fe257010A3855DFfacD5dC0BFBAb181b8f4",
+      "l1Registry": "0xB9826Bbf0deB10cC3924449B93F418db6b16be36",
+      "operatorRegistry": "0x46D45D6be6214F6bd8124187caD1a5302755d7A2"
     },
     "optinConfig": {
-      "operatorVaultOptInService": "0x0000000000000000000000000000000000000006",
-      "operatorL1OptInService": "0x0000000000000000000000000000000000000007"
+      "operatorVaultOptInService": "0xC30c9f7482B2ED82d0532812285295f8b7453941",
+      "operatorL1OptInService": "0x0360C1cB32A20D97b358538D9Db71339ce2c9592"
     },
     "l1RegistryConfig": {
-      "feeCollector": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+      "feeCollector": "0x2811086Bd8962C536264e711470f7ef9A783a5eB",
       "initialRegisterFee": 1e16,
       "maxRegisterFee": 1e18,
-      "owner": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+      "owner": "0x2811086Bd8962C536264e711470f7ef9A783a5eB"
     }
   }
-  

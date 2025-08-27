@@ -8,7 +8,7 @@ This document explains the required structure for deployment configuration files
 
 Required fields in the `deployed` section:
 - `vaultFactory`: Address of the deployed VaultFactory
-- `delegatorFactory`: Address of the deployed DelegatorFactory  
+- `delegatorFactory`: Address of the deployed DelegatorFactory
 - `slasherFactory`: Address of the deployed SlasherFactory
 - `l1Registry`: Address of the deployed L1Registry
 - `operatorRegistry`: Address of the deployed OperatorRegistry
@@ -22,7 +22,7 @@ Required fields in the `deployed` section:
 - `operatorRegistry`: Address of the deployed OperatorRegistry
 - `vaultFactory`: Address of the deployed VaultFactory
 - `operatorL1OptIn`: Address of the deployed OperatorL1OptInService (note: different key name!)
-- `primaryAsset`: Address of the primary asset (collateral token)
+- `primaryCollateral`: Address of the primary asset (collateral token)
 
 ### 3. Rewards Deployment (DeployRewardsL1)
 
@@ -53,7 +53,7 @@ Due to dependencies, deployments should be done in this order:
    - Deploy using DeployMiddlewareL1
    - Requires validator manager and factory addresses
 
-5. **Rewards** 
+5. **Rewards**
    - Deploy using DeployRewardsL1
    - Requires deployed middleware address
 
@@ -75,4 +75,4 @@ Due to dependencies, deployments should be done in this order:
 
 - The `anvilTest.json` includes all sections and deployed addresses for testing
 - Production deployments will need to update addresses after each deployment step
-- Always verify addresses before deploying dependent components 
+- Always verify addresses before deploying dependent components
