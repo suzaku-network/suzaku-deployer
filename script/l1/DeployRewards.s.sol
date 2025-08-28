@@ -25,13 +25,20 @@ contract DeployRewardsL1 is Script {
         // Parse fields into RewardsConfig
         RewardsConfig memory rewardsConfig;
         rewardsConfig.admin = json.readAddress(".roles.rewardsAdmin_rewards");
-        rewardsConfig.protocolOwner = json.readAddress(".roles.protocolOwner_rewards");
+        rewardsConfig.protocolOwner = json.readAddress(
+            ".roles.protocolOwner_rewards"
+        );
         rewardsConfig.middleware = json.readAddress(".deployed.middleware");
-        rewardsConfig.protocolFee = uint16(json.readUint(".rewards.protocolFee"));
-        rewardsConfig.operatorFee = uint16(json.readUint(".rewards.operatorFee"));
+        rewardsConfig.protocolFee = uint16(
+            json.readUint(".rewards.protocolFee")
+        );
+        rewardsConfig.operatorFee = uint16(
+            json.readUint(".rewards.operatorFee")
+        );
         rewardsConfig.curatorFee = uint16(json.readUint(".rewards.curatorFee"));
-        rewardsConfig.minRequiredUptime = json.readUint(".rewards.minRequiredUptime");
-        rewardsConfig.l1ID = json.readBytes32(".deployed.l1ID");
+        rewardsConfig.minRequiredUptime = json.readUint(
+            ".rewards.minRequiredUptime"
+        );
 
         // Deploy
         DeployRewards deploy = new DeployRewards();
@@ -76,20 +83,11 @@ contract DeployRewardsL1 is Script {
             "operatorFee",
             rewardsConfig.operatorFee
         );
-        data = vm.serializeUint(
-            label,
-            "curatorFee",
-            rewardsConfig.curatorFee
-        );
+        data = vm.serializeUint(label, "curatorFee", rewardsConfig.curatorFee);
         data = vm.serializeUint(
             label,
             "minRequiredUptime",
             rewardsConfig.minRequiredUptime
-        );
-        data = vm.serializeBytes32(
-            label,
-            "l1ID",
-            rewardsConfig.l1ID
         );
 
         // newly deployed
@@ -102,4 +100,4 @@ contract DeployRewardsL1 is Script {
         console2.log("Deployed UptimeTracker to:", uptimeTracker);
         console2.log("Output JSON =>", outFile);
     }
-} 
+}
