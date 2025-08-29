@@ -132,27 +132,27 @@ forge script script/l1/DeployRewards.s.sol:DeployRewardsL1 \
   --verify
 ```
 
-### 4. Deploy Validator
+### 4. Deploy ValidatorManager and PoA Manager as Owner of the ValidatorManager
 
 ```sh
-forge script script/l1/DeployPoAValidatorManager.s.sol:DeployPoAValidatorManager \
+forge script \
+  script/l1/DeployPoAValidatorManager.s.sol:DeployPoAValidatorManager \
   --sig "run(string,uint256,uint256)" "balancerExample.json" $PROXY_ADMIN_OWNER_KEY $VALIDATOR_MANAGER_OWNER_KEY \
   --broadcast \
   --rpc-url fuji \
-  --private-key "$PRIVATE_KEY" \
+  --via-ir \
   --verify
 ```
 
-### 5. Upgrade PoA to Balancer (Optional)
-
-To upgrade an existing PoA validator to a Balancer validator:
+### 5. Deploy BalancerValidatorManager, PoASecurityModule and transfer ValidatorManager ownership to BalancerValidatorManager
 
 ```sh
-forge script script/l1/UpgradePoAToBalancer.s.sol:DeployUpgradePoAToBalancer \
-  --sig "run(string,uint256)" "balancerExample.json" $PROXY_ADMIN_OWNER_KEY \
+forge script \
+  script/l1/UpgradePoAToBalancer.s.sol:DeployUpgradePoAToBalancer \
+  --sig "run(string,uint256,uint256)" "balancerExample.json" $PROXY_ADMIN_OWNER_KEY $VALIDATOR_MANAGER_OWNER_KEY \
   --broadcast \
   --rpc-url fuji \
-  --private-key "$PRIVATE_KEY" \
+  --via-ir \
   --verify
 ```
 

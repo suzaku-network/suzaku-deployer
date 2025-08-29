@@ -1,0 +1,8 @@
+{
+  "lib/suzaku-core": {
+    "branch": {
+      "name": "size-middleware",
+      "rev": "e3ce3bb6102053e02820e1d3af50a957e3036552"
+    }
+  }
+}

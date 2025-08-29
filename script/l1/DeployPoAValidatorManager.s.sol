@@ -3,14 +3,14 @@
 
 pragma solidity 0.8.25;
 
-import {PoAUpgradeConfig} from "@suzaku/contracts-lib/script/ValidatorManager/PoAUpgradeConfigTypes.s.sol";
+import {BalancerMigrationConfig} from "@suzaku/contracts-lib/script/ValidatorManager/BalancerConfigTypes.s.sol";
 
-import {ExecutePoAValidatorManager} from "@suzaku/contracts-lib/script/ValidatorManager/PoAValidatorManager.s.sol";
+import {ExecutePoAValidatorManager} from "@suzaku/contracts-lib/script/ValidatorManager/ExecutePoAValidatorManager.s.sol";
 import {Script, console2} from "forge-std/Script.sol";
 import {stdJson} from "forge-std/StdJson.sol";
 
 /**
- * @dev Deploy a PoA Validator Manager
+ * @dev Deploy a Validator Manager and PoA Manager as Validator Manager owner
  */
 contract DeployPoAValidatorManager is Script {
     using stdJson for string;
@@ -20,29 +20,21 @@ contract DeployPoAValidatorManager is Script {
         uint256 proxyAdminOwnerKey,
         uint256 validatorManagerOwnerKey
     ) external {
-        string memory jsonPath = string.concat(vm.projectRoot(), "/configs/", inputJsonPath);
+        string memory jsonPath = string.concat(
+            vm.projectRoot(),
+            "/configs/",
+            inputJsonPath
+        );
         string memory jsonData = vm.readFile(jsonPath);
 
-        PoAUpgradeConfig memory poaConfig;
-        poaConfig.proxyAddress = jsonData.readAddress(".deployed.proxyAddress");
-        poaConfig.initialSecurityModuleMaxWeight = uint64(
-            jsonData.readUint(".balancer.initialSecurityModuleMaxWeight")
-        );
+        BalancerMigrationConfig memory poaConfig;
 
-        string[] memory rawValidators = jsonData.readStringArray(
-            ".balancer.migratedValidators"
-        );
-        poaConfig.migratedValidators = new bytes[](rawValidators.length);
-        for (uint256 i = 0; i < rawValidators.length; i++) {
-            poaConfig.migratedValidators[i] = vm.parseBytes(rawValidators[i]);
-        }
-
-        poaConfig.l1ID = bytes32(jsonData.readBytes32(".balancer.l1ID"));
+        poaConfig.subnetID = bytes32(jsonData.readBytes32(".subnetID"));
         poaConfig.churnPeriodSeconds = uint64(
-            jsonData.readUint(".balancer.churnPeriodSeconds")
+            jsonData.readUint(".churnPeriodSeconds")
         );
         poaConfig.maximumChurnPercentage = uint8(
-            jsonData.readUint(".balancer.maximumChurnPercentage")
+            jsonData.readUint(".maximumChurnPercentage")
         );
 
         poaConfig.proxyAdminOwnerAddress = vm.addr(proxyAdminOwnerKey);
@@ -50,19 +42,40 @@ contract DeployPoAValidatorManager is Script {
             validatorManagerOwnerKey
         );
 
-        // vm.startBroadcast(proxyAdminOwnerKey);
         ExecutePoAValidatorManager upgradeScript = new ExecutePoAValidatorManager();
-        address finalProxy = upgradeScript.executeDeployPoA(
-            poaConfig,
-            proxyAdminOwnerKey
+        (
+            address validatorManagerProxy,
+            address poaManagerAddress
+        ) = upgradeScript.executeDeployPoA(
+                poaConfig,
+                proxyAdminOwnerKey,
+                validatorManagerOwnerKey
+            );
+        console2.log(
+            "Deployed Validator Manager proxy at:",
+            validatorManagerProxy
         );
-        console2.log("Deployed PoA proxy at:", finalProxy);
+        console2.log("Deployed PoA Manager at:", poaManagerAddress);
 
-        // Update deployment file with the new validatorManager address
-        vm.writeJson(vm.toString(finalProxy), jsonPath, ".deployed.proxyAddress");
+        // Update deployment file with the new validatorManager and poaManager addresses
+        vm.writeJson(
+            vm.toString(validatorManagerProxy),
+            jsonPath,
+            ".deployed.validatorManagerProxy"
+        );
+        vm.writeJson(
+            vm.toString(poaManagerAddress),
+            jsonPath,
+            ".deployed.poaManagerAddress"
+        );
 
-        console2.log("Updated deployment file with validatorManager:", finalProxy);
-
-        // vm.stopBroadcast();
+        console2.log(
+            "Updated deployment file with validatorManager:",
+            validatorManagerProxy
+        );
+        console2.log(
+            "Updated deployment file with poaManager:",
+            poaManagerAddress
+        );
     }
 }

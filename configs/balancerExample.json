@@ -1,18 +1,15 @@
 {
-  "factoriesFile": "protocolExample.json",
+  "subnetID": "0x73b41e3174269547046735004f17d2eb4b04201b9a7528c23865a41328755b71",
+  "churnPeriodSeconds": 0,
+  "maximumChurnPercentage": 20,
   "balancer": {
-    "initialSecurityModuleMaxWeight": 1000000,
-    "l1ID": "0x66226f76a8fb608290afeadc795bf8fe1e54779285228833d489ebf21ca06a07",
-    "churnPeriodSeconds": 3600,
-    "maximumChurnPercentage": 20,
-    "migratedValidations": [
-      "0x2818b9d2052366ce901e27e90edbeab6aa4a0a74b4db4825992cc56efd25eec6"
+    "initialSecurityModuleMaxWeight": 100,
+    "migratedValidators": [
+      "0xb352bbac61c7df2feed6e36e320d00a992cb7b7f"
     ]
   },
-  "roles": {
-    "validatorManagerOwner_balancer": "0xC15adc0C87db428B9FC0Bb3246e7dEb2A991aa6E"
-  },
   "deployed": {
-    "proxyAddress": "0x84F2B4D4cF8DA889701fBe83d127896880c04325"
+    "validatorManagerProxy": "TBD",
+    "poaManagerAddress": "TBD"
   }
 }

@@ -3,8 +3,9 @@
 
 pragma solidity 0.8.25;
 
-import {PoAUpgradeConfig} from "@suzaku/contracts-lib/script/ValidatorManager/PoAUpgradeConfigTypes.s.sol";
-import {UpgradePoAToBalancer} from "@suzaku/contracts-lib/script/ValidatorManager/UpgradePoAToBalancer.s.sol";
+import {BalancerMigrationConfig} from "@suzaku/contracts-lib/script/ValidatorManager/BalancerConfigTypes.s.sol";
+import {MigratePoAToBalancer} from "@suzaku/contracts-lib/script/ValidatorManager/ExecuteMigratePoAToBalancer.s.sol";
+import {ExtractValidators} from "@suzaku/contracts-lib/script/ValidatorManager/ExtractValidators.s.sol";
 import {Script, console2} from "forge-std/Script.sol";
 import {stdJson} from "forge-std/StdJson.sol";
 import {DateTimeLib} from "../libraries/DateTimeLib.sol";
@@ -14,46 +15,70 @@ contract DeployUpgradePoAToBalancer is Script {
 
     function run(
         string memory inputJsonPath,
-        uint256 proxyAdminOwnerKey
+        uint256 proxyAdminOwnerKey,
+        uint256 validatorManagerOwnerKey
     ) external {
-        string memory jsonPath = string.concat(vm.projectRoot(), "/configs/", inputJsonPath);
-        string memory jsonData =  vm.readFile(jsonPath);
-
-        PoAUpgradeConfig memory balancerConfig;
-        balancerConfig.proxyAddress = jsonData.readAddress(
-            ".deployed.proxyAddress"
+        string memory jsonPath = string.concat(
+            vm.projectRoot(),
+            "/configs/",
+            inputJsonPath
         );
-        balancerConfig.validatorManagerOwnerAddress = jsonData.readAddress(
-            ".roles.validatorManagerOwner_balancer"
+        string memory jsonData = vm.readFile(jsonPath);
+
+        BalancerMigrationConfig memory balancerConfig;
+        balancerConfig.proxyAddress = jsonData.readAddress(
+            ".deployed.validatorManagerProxy"
         );
         balancerConfig.initialSecurityModuleMaxWeight = uint64(
             jsonData.readUint(".balancer.initialSecurityModuleMaxWeight")
         );
 
-        string[] memory rawValidators = jsonData.readStringArray(
-            ".balancer.migratedValidators"
-        );
-        balancerConfig.migratedValidators = new bytes[](rawValidators.length);
-        for (uint256 i = 0; i < rawValidators.length; i++) {
-            balancerConfig.migratedValidators[i] = vm.parseBytes(
-                rawValidators[i]
-            );
-        }
-
-        balancerConfig.l1ID = bytes32(jsonData.readBytes32(".balancer.l1ID"));
+        balancerConfig.subnetID = bytes32(jsonData.readBytes32(".subnetID"));
         balancerConfig.churnPeriodSeconds = uint64(
-            jsonData.readUint(".balancer.churnPeriodSeconds")
+            jsonData.readUint(".churnPeriodSeconds")
         );
         balancerConfig.maximumChurnPercentage = uint8(
-            jsonData.readUint(".balancer.maximumChurnPercentage")
+            jsonData.readUint(".maximumChurnPercentage")
         );
 
         balancerConfig.proxyAdminOwnerAddress = vm.addr(proxyAdminOwnerKey);
+        balancerConfig.validatorManagerOwnerAddress = vm.addr(
+            validatorManagerOwnerKey
+        );
 
-        UpgradePoAToBalancer upgradeScript = new UpgradePoAToBalancer();
-        (address finalProxy, address securityModule) = upgradeScript
-            .executeUpgradePoAToBalancer(balancerConfig, proxyAdminOwnerKey);
-        console2.log("Upgraded PoA proxy at:", finalProxy);
+        balancerConfig.validatorManagerProxy = jsonData.readAddress(
+            ".deployed.validatorManagerProxy"
+        );
+        balancerConfig.poaManager = jsonData.readAddress(
+            ".deployed.poaManagerAddress"
+        );
+
+        // Build migratedValidators array using ExtractValidators
+        ExtractValidators extractor = new ExtractValidators();
+
+        bytes[] memory rawValidators = jsonData.readBytesArray(
+            ".balancer.migratedValidators"
+        );
+
+        bytes[] memory migratedValidators = extractor
+            .extractActiveOrPendingAdded(
+                balancerConfig.validatorManagerProxy,
+                rawValidators
+            );
+
+        balancerConfig.migratedValidators = migratedValidators;
+
+        MigratePoAToBalancer upgradeScript = new MigratePoAToBalancer();
+        (
+            address balancerValidatorManagerProxy,
+            address securityModule,
+
+        ) = upgradeScript.executeMigratePoAToBalancer(
+                balancerConfig,
+                proxyAdminOwnerKey,
+                validatorManagerOwnerKey
+            );
+        console2.log("Upgraded PoA proxy at:", balancerValidatorManagerProxy);
         console2.log("Deployed PoA security module at:", securityModule);
 
         // Write JSON output
@@ -67,13 +92,16 @@ contract DeployUpgradePoAToBalancer is Script {
         );
         vm.createDir(path, true);
 
-        string memory outFile = string.concat(path, "/poAUpgrade.json");
-        string memory label = "PoAUpgrade";
+        string memory outFile = string.concat(
+            path,
+            "/upgradePoAToBalancer.json"
+        );
+        string memory label = "UpgradePoAToBalancer";
         string memory data;
 
         data = vm.serializeAddress(
             label,
-            "poAProxyAddress",
+            "ValidatorManagerProxy",
             balancerConfig.proxyAddress
         );
         data = vm.serializeUint(
@@ -92,7 +120,7 @@ contract DeployUpgradePoAToBalancer is Script {
             "validatorManagerOwnerAddress",
             balancerConfig.validatorManagerOwnerAddress
         );
-        data = vm.serializeBytes32(label, "l1ID", balancerConfig.l1ID);
+        data = vm.serializeBytes32(label, "subnetID", balancerConfig.subnetID);
         data = vm.serializeUint(
             label,
             "churnPeriodSeconds",
@@ -104,7 +132,11 @@ contract DeployUpgradePoAToBalancer is Script {
             balancerConfig.maximumChurnPercentage
         );
 
-        data = vm.serializeAddress(label, "UpgradedPoAProxy", finalProxy);
+        data = vm.serializeAddress(
+            label,
+            "BalancerValidatorManagerProxy",
+            balancerValidatorManagerProxy
+        );
         data = vm.serializeAddress(label, "PoASecurityModule", securityModule);
 
         vm.writeJson(data, outFile);
