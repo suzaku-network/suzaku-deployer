@@ -9,7 +9,6 @@ To do so, we added to the [`configs/plyr/ValidatorManagerUpgrade.json`](../../co
 - Deploy the new `ValidatorManager` implementation
 - Upgrade the implementation used by the proxy
 - Deploy the `PoAManager`
-- Transfer the `ValidatorManager` ownership to the `PoAManager`
 
 ### Execution:
 

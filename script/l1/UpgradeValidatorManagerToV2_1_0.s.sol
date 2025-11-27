@@ -40,8 +40,6 @@ contract UpgradeValidatorManagerToV2_1_0 is Script {
         UnsafeUpgrades.upgradeProxy(validatorManagerProxy, address(validatorManagerImpl), "");
         // Deploy PoAManager
         PoAManager PoAMng = new PoAManager( vm.addr(validatorManagerOwnerKey), IValidatorManagerExternalOwnable(validatorManagerProxy));
-        // Transfer the validatorManagerProxy ownership from proxyAdminOwner to the PoAManager
-        IValidatorManagerExternalOwnable(validatorManagerProxy).transferOwnership(address(PoAMng));
         vm.stopBroadcast();
         // Check if deployment file exists
         try vm.readFile(deploymentPath) {
