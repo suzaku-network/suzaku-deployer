@@ -12,15 +12,16 @@ import {Script, console2} from "forge-std/Script.sol";
 import {IValidatorManagerExternalOwnable} from
     "@avalabs/icm-contracts/validator-manager/interfaces/IValidatorManagerExternalOwnable.sol";
 
-/**
- * @dev Deploy a Validator Manager and PoA Manager then upgrade.
- * @param proxyAdminOwnerKey the private key of the ProxyAdmin owner
- * @param validatorManagerOwnerKey the private key of the ValidatorManager owner
- * @param inputJsonPath the path to the configuration file. Should fit configs/balancerExample.json schema
- */
+
 contract UpgradeValidatorManagerToV2_1_0 is Script {
     using stdJson for string;
 
+    /**
+    * @dev Deploy a Validator Manager and PoA Manager then upgrade.
+    * @param proxyAdminOwnerKey the private key of the ProxyAdmin owner
+    * @param validatorManagerOwnerKey the private key of the ValidatorManager owner
+    * @param deploymentFile the path to the configuration file. Should fit configs/balancerExample.json schema
+    */
     function run(
         uint256 proxyAdminOwnerKey,
         uint256 validatorManagerOwnerKey,
