@@ -4,6 +4,7 @@
 pragma solidity 0.8.25;
 
 import {stdJson} from "forge-std/StdJson.sol";
+import {DateTimeLib} from "../libraries/DateTimeLib.sol";
 import {ValidatorManager} from "@avalabs/icm-contracts/validator-manager/ValidatorManager.sol";
 import {PoAManager} from "@avalabs/icm-contracts/validator-manager/PoAManager.sol";
 import {ICMInitializable} from "@avalabs/icm-contracts/utilities/ICMInitializable.sol";
@@ -54,6 +55,39 @@ contract UpgradeValidatorManagerToV2_1_0 is Script {
                 )
             );
         }
+
+        // Write JSON output
+        string memory chainId = vm.toString(block.chainid);
+        string memory date = DateTimeLib.timestampToDate(block.timestamp);
+        string memory path = string.concat(
+            "./deployments/",
+            chainId,
+            "/",
+            date
+        );
+        vm.createDir(path, true);
+
+        string memory outFile = string.concat(
+            path,
+            "/UpgradeValidatorManagerToV2_1_0.json"
+        );
+        string memory label = "UpgradeValidatorManagerToV2_1_0";
+        string memory data;
+
+        data = vm.serializeAddress(
+            label,
+            "ValidatorManagerProxy",
+            validatorManagerProxy
+        );
+
+        data = vm.serializeAddress(
+            label,
+            "PoAManager",
+            address(PoAMng)
+        );
+
+        vm.writeJson(data, outFile);
+        console2.log("Output JSON =>", outFile);
 
         console2.log("PoAManager deployed and saved in the deployment file:", address(PoAMng));
         console2.log("validator Manager v2.1.0 deployed:", address(validatorManagerImpl));
