@@ -18,7 +18,7 @@ anvil --fork-url https://api.avax.network/ext/bc/C/rpc --host 0.0.0.0
 # on another terminal:
 forge script script/l1/UpgradeValidatorManagerToV2_1_0.s.sol:UpgradeValidatorManagerToV2_1_0 --sig "run(uint256,uint256,string)" $OWNER_PK $OWNER_PK "plyr/ValidatorManagerUpgrade.json" --broadcast --rpc-url http://127.0.0.1:8545 --private-key $OWNER_PK
 # Check
-cast call 0x9b40cce8650cd839f926a1da78894805f19acf8e 'owner()(address)' --rpc-url http://127.0.0.1:8545 # Should be the PoAManagerAddress
+cast call 0x9b40cce8650cd839f926a1da78894805f19acf8e 'owner()(address)' --rpc-url http://127.0.0.1:8545 # Should be the OWNER_PK address
 cast call <PoAManagerAddress> 'owner()(address)' --rpc-url http://127.0.0.1:8545 # Should be the OWNER_PK address
 ```
 The command for the real upgrade:
@@ -29,4 +29,4 @@ forge script script/l1/UpgradeValidatorManagerToV2_1_0.s.sol:UpgradeValidatorMan
 
 ### Next step:
 
-- Transfer the `PoAManager` ownership to the multisig
+- Transfer the `ValidatorManager` ownership to the multisig
