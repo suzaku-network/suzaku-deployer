@@ -29,4 +29,7 @@ forge script script/l1/UpgradeValidatorManagerToV2_1_0.s.sol:UpgradeValidatorMan
 
 ### Next step:
 
-- Transfer the `ValidatorManager` ownership to the multisig
+- Transfer the `ValidatorManager` ownership to the Suzaku team multisig:
+```bash
+cast send 0x9b40cce8650cd839f926a1da78894805f19acf8e "transferOwnership(address)" 0x55082eba8F8F20e858ec6490e0b6030315d8cF4E --rpc-url https://api.avax.network/ext/bc/C/rpc --private-key $OWNER_PK
+```
